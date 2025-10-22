@@ -65,7 +65,7 @@ def run_training(args, train_data):
 
         local_rank=args.local_rank,
 
-        deepspeed=args.deepspeed,
+        # Use FP16 only (no DeepSpeed - incompatible with gradient accumulation on multi-GPU)
         fp16=args.fp16,
         
     )

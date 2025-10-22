@@ -17,7 +17,7 @@ parser.add_argument('--batch-size-per-replica', default=2, type=int, help='batch
 parser.add_argument('--grad-acc-steps', default=16, type=int, help='number of training steps before each gradient update')
 parser.add_argument('--deepspeed', default=None, type=str, help='path to deepspeed configuration file; set None if not using deepspeed')
 parser.add_argument('--fp16', default=True, action='store_true', help='set 16-bit training to reduce memory usage')
-parser.add_argument('--local_rank', default=-1, type=int)
+parser.add_argument('--local-rank', default=-1, type=int, dest='local_rank', help='local rank for distributed training')
 parser.add_argument('--db', default=False, action='store_true', help='set to turn on debug mode i.e. using dummy small data split and only 1 data worker')
 
 # Logging

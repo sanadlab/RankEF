@@ -1,1 +1,3 @@
 data/apps/train
+__pycache__/
+*.pyc

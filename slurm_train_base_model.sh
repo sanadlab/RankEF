@@ -5,11 +5,11 @@
 #SBATCH --error=train_base_model_%j.err
 #SBATCH --ntasks=1                      # Number of tasks
 #SBATCH --partition=nvidia              # Partition name
-#SBATCH --gres=gpu:a100:1                    
-#SBATCH -C 80g
-#SBATCH --time=01:00:00                 
-#SBATCH --mem=64G                      
-#SBATCH --cpus-per-task=32              
+#SBATCH --gres=gpu:4               # Request 4 A100 GPUs
+
+#SBATCH --time=16:00:00                 
+#SBATCH --mem=64G                       # Double memory for 2 GPUs
+#SBATCH --cpus-per-task=32              # More CPU cores for 2 GPUs              
 
 # Set up
 module purge
@@ -40,9 +40,10 @@ echo "SLURM allocated memory: $SLURM_MEM_PER_NODE MB"
 done) &
 MONITOR_PID=$!
 
-# OPTIMIZED: Multi-GPU training with torchrun
-# All optimization parameters are passed explicitly here for clarity
-python \
+# Multi-GPU training with FP16 (no DeepSpeed - incompatible with gradient accumulation)
+# Using torch.distributed.launch for distributed training across 2 GPUs
+python -m torch.distributed.launch \
+    --nproc_per_node=4 \
     train_base_model.py \
     --train-path data/apps/train \
     --save_dir steps \
