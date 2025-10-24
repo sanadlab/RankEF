@@ -1,4 +1,21 @@
 # RankEF
+
+## Custom Additions
+Useful things created while recreating the steps to produce a RankEF model.
+
+To generate code samples:
+- `slurm_generate.sh`: SLURM script to generate all the code samples. As every task is independent, it divides them into chunks so that we don't have to wait for a long continuous amount of time to be available. 
+
+Sometimes, some generations may be missing because SLURM jobs were terminated or simply some other error:
+- `missing_rerun.sh`: sets up the appropriate variables and submits SLURM jobs that will be in charge to generate code samples only for the missing ids.
+- `missing.sh`: computes the missing ranges of missing ids, i.e. ids for which code samples are still not generated (`missing_rerun.sh` makes use of it; normally not executed manually).
+- `slurm_generate_rerun.sh`: SLURM script that will launch the necessary jobs. Some variables need to be defined before running this script. As such, it is not intended to be executed manually (`missing_rerun.sh` takes care of it and executes this script appropriately).
+
+To compress/extract the code samples (directory `dataset_construction`):
+- `compress_or_extract.sh`: If you pass a directory name, e.g. `dataset_construction`, it compresses it. If it's already compressed, e.g. `dataset_construction.tar.xz` and you pass it, the script will extract it.
+
+===============================================
+
 ## Installation
 The code requires some dependencies as specified in `requirements.txt`. Please follow the relevant libraries to install or run: 
 
