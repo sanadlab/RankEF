@@ -1,6 +1,7 @@
 import json
 import os
 import pprint
+import sys
 import torch
 import pdb 
 import glob 
@@ -13,18 +14,19 @@ def generate_prompt(args, test_case_path, prompt_path, solutions_path, tokenizer
                     starter_path=None):
     
     _input = "\nQUESTION:\n"
-    with open(prompt_path, "r") as f:
+    with open(prompt_path, "r", encoding="utf-8") as f:
         data = f.readlines()
         data = "".join(data)
     _input += data
     
     if starter_path != None:
-        with open(starter_path, "r") as f:
+        with open(starter_path, "r", encoding="utf-8") as f:
             data = f.readlines()
             data = "".join(data)
             data = "\n" + data 
         _input += data
     
+    sys.set_int_max_str_digits(100000) # necessary because of issues parsing test cases for at least one program
     if os.path.exists(test_case_path):
         with open(test_case_path, "r") as f:
             data = json.load(f)
@@ -69,7 +71,8 @@ def main(args):
     model = T5ForConditionalGeneration.from_pretrained(args.model_path)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
-
+    model.eval()
+    
     for index, problem in tqdm(enumerate(problems), ncols=0, total=len(problems)):
         
         prob_path = os.path.join(problem)
@@ -96,7 +99,7 @@ def main(args):
             
             input_ids = torch.LongTensor(tokenizer.encode(input_text, 
                                                               verbose=False, 
-                                                              max_length=args.source_len)).unsqueeze(0).cuda()
+                                                              max_length=args.source_len)).unsqueeze(0).to(device)
 
             num_loops = int(args.num_seqs / args.num_seqs_per_iter)
             output_programs = [] 
