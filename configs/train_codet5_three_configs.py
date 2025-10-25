@@ -8,6 +8,7 @@ parser.add_argument('--save_dir', default=None, type=str, help='path to save tra
 
 # Dataloading
 parser.add_argument('--train_path', default="/data/train.jsonl", type=str, help='path to training data')
+parser.add_argument('--val_path', default="/data/val.jsonl", type=str, help='path to validation data')
 # Model
 parser.add_argument('--num_labels', default=3, type=int, help="")
 # Training
@@ -17,7 +18,7 @@ parser.add_argument('--batch-size-per-replica', default=2, type=int, help='batch
 parser.add_argument('--grad-acc-steps', default=64, type=int, help='number of training steps before each gradient update')
 parser.add_argument('--deepspeed', default = None, type=str, help='path to deepspeed configuration file; set None if not using deepspeed')
 parser.add_argument('--fp16', default=True, action='store_true', help='set 16-bit training to reduce memory usage')
-parser.add_argument('--local_rank', default=-1, type=int)
+parser.add_argument('--local-rank', '--local_rank', default=-1, type=int, dest='local_rank')
 parser.add_argument('--db', default=False, action='store_true', help='set to turn on debug mode i.e. using dummy small data split and only 1 data worker')
 
 # Logging

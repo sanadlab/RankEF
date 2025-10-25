@@ -8,7 +8,7 @@ import random
 from tqdm import tqdm 
 from collections import Counter
 import json, pdb 
-from reindent import run as run_reindent
+from .reindent import run as run_reindent
 
 from multiprocessing import Manager
 import transformers
